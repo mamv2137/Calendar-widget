@@ -11,4 +11,23 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: 'dist',
+    lib: {
+      entry: 'src/index.ts',
+      name: 'PaymentWidget',
+      formats: ['umd', 'es'],
+      fileName: (format) => `payment-widget.${format}.js`
+    },
+    rollupOptions: {
+      output: {
+        assetFileNames: 'payment-widget.[ext]',
+        // Exponer funciones para inicialización desde host
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM'
+        }
+      }
+    }
+  }
 })

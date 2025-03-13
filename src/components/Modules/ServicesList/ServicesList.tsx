@@ -3,6 +3,7 @@ import { ServicesPaymentListProps } from "./types";
 import { PaymentMethod, Service } from "@/types";
 import ServiceItem from "./ServiceItem";
 import PaymentMethodDrawer from "../PaymentDrawer";
+import { usePostMessage } from "@/hooks/usePostMessage";
 
 export default function ServicesPaymentList({
   services: initialServices = [],
@@ -17,6 +18,14 @@ export default function ServicesPaymentList({
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedService, setSelectedService] = useState<Service | null>(null)
 
+  const [sendMessage] = usePostMessage({
+    // Manejador para cuando el host solicita refrescar datos
+    REFRESH_DATA: () => {
+      console.log("Solicitada actualización de datos");
+      // Invalidar consultas para refrescar datos
+    }
+  });
+
   useEffect(() => {
     setServices(initialServices)
   }, [initialServices])
@@ -27,11 +36,15 @@ export default function ServicesPaymentList({
     setDrawerOpen(true)
   }
 
-  const processPayment = async (serviceId: string, paymentMethodId?: string) => {
+  const processPayment = async (service: Service, paymentMethodId?: string) => {
+    const serviceId = service.id;
     setLoading((prev) => ({ ...prev, [serviceId]: true }))
 
     try {
       const result = await onPayService(serviceId, paymentMethodId)
+      sendMessage('PAYMENT_COMPLETED', {
+        ...service,
+      });
 
       setServices((prevServices) =>
         prevServices.map((service) =>
@@ -47,6 +60,10 @@ export default function ServicesPaymentList({
       setServices((prevServices) =>
         prevServices.map((service) => (service.id === serviceId ? { ...service, status: "error" } : service)),
       )
+      sendMessage('ERROR', {
+        code: error?.code,
+        message: error?.message,
+      })
     } finally {
       setLoading((prev) => ({ ...prev, [serviceId]: false }))
     }
@@ -54,13 +71,13 @@ export default function ServicesPaymentList({
 
   const handlePaymentMethodAdded = (paymentMethodId: string) => {
     if (selectedService) {
-      processPayment(selectedService.id, paymentMethodId)
+      processPayment(selectedService, paymentMethodId)
     }
   }
 
   const handlePayWithExistingMethod = (paymentMethodId: string) => {
     if (selectedService) {
-      processPayment(selectedService.id, paymentMethodId)
+      processPayment(selectedService, paymentMethodId)
     }
   }
 

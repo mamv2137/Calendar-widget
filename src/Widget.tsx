@@ -1,11 +1,15 @@
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import ServicesList from "@/components/Modules/ServicesList"
 import { getCardType } from "./lib/card-utils"
 import { PaymentFormData, PaymentMethod, Service } from "./types"
 import { useGetServices } from "./hooks/useGetServices"
+import { useConfig } from "./contexts/ConfigContext"
+import bridge from "./config/bridge"
 
 export default function ServicesPaymentDemo() {
+  const { config } = useConfig();
+  const containerRef = useRef<HTMLDivElement>(null);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([
     {
       id: "pm-1",
@@ -24,6 +28,25 @@ export default function ServicesPaymentDemo() {
   ])
 
   const { data = [], isPending } = useGetServices();
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const height = entry.contentRect.height;
+        bridge.resize(height);
+      }
+    });
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        resizeObserver.unobserve(containerRef.current);
+      }
+    };
+  }, []);
 
   const handlePayService = async (serviceId: string) => {
     // Simulate API call with random success/failure
@@ -76,7 +99,7 @@ export default function ServicesPaymentDemo() {
   }
 
   return (
-    <div className="container py-10 mx-auto">
+    <div className={`container py-10 mx-auto ${config.size === 'compact' ? 'max-w-md' : 'w-full'}`} ref={containerRef}>
       <h1 className="text-3xl font-bold mb-8 text-center">Tus Servicios por pagar</h1>
       <ServicesList
         services={data as Service[]}
