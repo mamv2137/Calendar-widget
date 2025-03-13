@@ -2211,7 +2211,7 @@ Todo esto con el sentido de acelerar el desarrollo y poder hacer uso de LLMs que
 - Mejoras al codigo
     - Patron Adapter para el fetcher, haciendolo flexible a las integraciones o cambios
     - Integracion con Json-server para hacer un stub para integrar el servicio y posteriormente ser sustituido con integraciones reales con AWS
-    - Uso de Zod para la inferencia de tipos y tener una sola fuente de verdad para los contratos
+    - Cambio de estructura de archivos para que sea mas escalable y mantenible.
     - Uso de react-query directamente ya que maneja la cache de las request por nosotros y diferentes estados de las mismas con mayor facilidad, su integracion es muy rapida.
   
 - Posibles futuras mejoras al widget
