@@ -57,3 +57,23 @@ export interface Event {
   type: EventType;
   payload?: InitPayload | GenericObject;
 }
+
+export interface PaymentDetails {
+  amount: number;
+  paymentMethod: string;
+  cardDetails?: {
+    number: string;
+    expiry: string;
+    cvv: string;
+    holderName: string;
+  };
+}
+
+export interface PaymentResult {
+  transactionId: string;
+  status: string;
+  timestamp: string;
+  receipt?: {
+    url: string;
+  };
+}

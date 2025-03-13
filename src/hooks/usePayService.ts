@@ -1,4 +1,6 @@
+import { PaymentDetails, PaymentResult } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import * as paymentService from "@/services/payments";
 
 interface PayServiceParams {
   serviceId: string;
@@ -14,8 +16,8 @@ export function usePayService() {
     {
       onSuccess: () => {
         // Invalidar consultas relacionadas para forzar refresco
-        queryClient.invalidateQueries('services');
-        queryClient.invalidateQueries('payments');
+        queryClient.invalidateQueries({ queryKey: ['services'] });
+        queryClient.invalidateQueries({ queryKey: ['payments'] });
 
       },
     }
