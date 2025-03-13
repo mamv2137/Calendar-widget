@@ -2208,13 +2208,13 @@ Se tomo en consideracion que es una PoC, para esto usaremos las siguientes depen
 
 Todo esto con el sentido de acelerar el desarrollo y poder hacer uso de LLMs que ayuden al delivery de este widget ASAP, en este caso se usaron Claude en su version 3.7 Extended para poder tener todo el potencial de este LLM en la construccion y entendimiento del requerimiento, ademas se hizo uso de v0 para generar UIs rapidas
 
-- Mejoras al codigo
+### Mejoras al codigo
     - Patron Adapter para el fetcher, haciendolo flexible a las integraciones o cambios
     - Integracion con Json-server para hacer un stub para integrar el servicio y posteriormente ser sustituido con integraciones reales con AWS
     - Cambio de estructura de archivos para que sea mas escalable y mantenible.
     - Uso de react-query directamente ya que maneja la cache de las request por nosotros y diferentes estados de las mismas con mayor facilidad, su integracion es muy rapida.
   
-- Posibles futuras mejoras al widget
+### Posibles futuras mejoras al widget
     - **S3**: Para almacenamiento de logs y reportes
     - **CloudWatch**: Para monitoreo y alertas
     - Encriptacion / ofuscamiento de los datos de la TDC del cliente
@@ -2223,3 +2223,17 @@ Todo esto con el sentido de acelerar el desarrollo y poder hacer uso de LLMs que
     - Creacion de un Design system para que este sea construido basado en el, y ademas se puedan crear variatnes a partir de este
     - Poder tener bundles de diferentes frameworks/librerias de este widget para su integracion mas directa en el framework q esten usando en la empresa host y los devs puedan tener un mayor control o en su defecto extender los estilos con variables CSS y exportarlos para que sea mas facil su customizacion
     - Creacion de una libreria de tipos comunes entre frontend y backend
+  
+### Instrucciones para ejecutar la demo
+  - Instalar todas las dependencias desde el root
+    ```
+    npm install
+    ```
+  - En una terminar ejecutar el comando para levantar el proyecto
+    ```
+    npm run dev
+    ```
+  - En otro terminal ejecutar el comentado para levantar el mock server
+ 	``` 
+    npm run serve
+    ```
