@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { ServiceItemProps } from "./types";
+import ServiceAlertManager from "../ServiceAlerts/ServiceAlertManager";
 
 export function ServiceItem({ service, paymentMethods, onPaymentClick, isLoading }: ServiceItemProps) {
   const formatCurrency = (amount: number, currency: string) => {
@@ -12,42 +13,6 @@ export function ServiceItem({ service, paymentMethods, onPaymentClick, isLoading
       style: "currency",
       currency,
     }).format(amount)
-  }
-
-  const renderStatusAlert = () => {
-    if (!service.status || service.status === "pending") return null
-
-    if (service.status === "success") {
-      return (
-        <Alert className="mt-4 bg-green-50 text-green-800 border-green-200">
-          <CheckCircle className="h-4 w-4 text-green-600" />
-          <AlertTitle>Payment Successful</AlertTitle>
-          <AlertDescription>Your payment for {service.name} has been processed successfully.</AlertDescription>
-        </Alert>
-      )
-    }
-
-    if (service.status === "failed") {
-      return (
-        <Alert className="mt-4 bg-amber-50 text-amber-800 border-amber-200">
-          <AlertCircle className="h-4 w-4 text-amber-600" />
-          <AlertTitle>Payment Failed</AlertTitle>
-          <AlertDescription>
-            Your payment could not be processed. Please try again or use a different payment method.
-          </AlertDescription>
-        </Alert>
-      )
-    }
-
-    if (service.status === "error") {
-      return (
-        <Alert className="mt-4 bg-red-50 text-red-800 border-red-200">
-          <XCircle className="h-4 w-4 text-red-600" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>An error occurred while processing your payment. Please try again later.</AlertDescription>
-        </Alert>
-      )
-    }
   }
 
   return (
@@ -61,7 +26,7 @@ export function ServiceItem({ service, paymentMethods, onPaymentClick, isLoading
           <div className="text-2xl font-bold">{formatCurrency(service.amount, service.currency)}</div>
           <div className="text-sm text-muted-foreground">Due: {dayjs(new Date(service.dueDate)).format("MMM d, yyyy")}</div>
         </div>
-        {renderStatusAlert()}
+        <ServiceAlertManager service={service} />
       </CardContent>
       <CardFooter className="bg-muted/10 pt-3">
         <Button
