@@ -1,10 +1,11 @@
-import { Button } from "@/components/ui/button"
+import Providers from './contexts/Providers'
+import ServicesPaymentDemo from './Widget'
 
-function App() {
+const App = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
+    <Providers>
+      <ServicesPaymentDemo />
+    </Providers>
   )
 }
 

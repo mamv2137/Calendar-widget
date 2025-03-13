@@ -1,0 +1,1 @@
+export { PaymentMethodDrawer as default } from './PaymentDrawer';
